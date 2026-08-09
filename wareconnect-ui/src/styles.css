@@ -1,0 +1,30 @@
+@import "primeicons/primeicons.css";
+
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+  background: #f1f5f9;
+  color: #1e293b;
+}
+
+/* PrimeNG table overrides */
+.p-datatable .p-datatable-thead > tr > th {
+  background: #f8fafc;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #64748b;
+  border-bottom: 2px solid #e2e8f0;
+  padding: 10px 12px;
+}
+.p-datatable .p-datatable-tbody > tr > td {
+  font-size: 13px;
+  padding: 9px 12px;
+  border-bottom: 1px solid #f1f5f9;
+}
+.p-datatable .p-datatable-tbody > tr:hover > td {
+  background: #f0f7ff !important;
+}

@@ -1,0 +1,56 @@
+<ng-container *ngIf="state$ | async as state">
+<div class="chat-header">
+  <div class="header-info">
+    <div class="header-avatar" aria-hidden="true">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+        <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z" fill="white" opacity="0.2"/>
+        <path d="M8 9.5C8 8.12 9.12 7 10.5 7h3C14.88 7 16 8.12 16 9.5v0C16 10.88 14.88 12 13.5 12H12v2" stroke="white" stroke-width="1.8" stroke-linecap="round"/>
+        <circle cx="12" cy="16" r="1" fill="white"/>
+      </svg>
+    </div>
+    <div class="header-text">
+      <span class="header-title">Reporting Tool Copilot</span>
+      <span class="header-subtitle">Context Driven Read-Only AI Assistant</span>
+    </div>
+  </div>
+
+  <div class="header-actions">
+    <button class="header-btn" (click)="onClearClick()" aria-label="Clear conversation" title="Clear conversation">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+        <path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+    <button class="header-btn header-btn-close" (click)="onClose()" aria-label="Close copilot" title="Close">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+        <path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+    </button>
+  </div>
+</div>
+
+<!-- Model selector bar (only when multiple models available) -->
+<div class="model-bar" *ngIf="state.availableModels.length > 0">
+  <svg class="model-icon" width="13" height="13" viewBox="0 0 24 24" fill="none">
+    <circle cx="12" cy="12" r="3" fill="currentColor"/>
+    <path d="M12 2v3M12 19v3M4.22 4.22l2.12 2.12M17.66 17.66l2.12 2.12M2 12h3M19 12h3M4.22 19.78l2.12-2.12M17.66 6.34l2.12-2.12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+  </svg>
+  <span class="model-label">Model</span>
+  <select class="model-select"
+    [value]="state.selectedModelId"
+    (change)="onModelChange($event)"
+    aria-label="Select AI model">
+    <option *ngFor="let m of state.availableModels" [value]="m.id">{{ m.displayName }}</option>
+  </select>
+</div>
+
+<!-- Clear Confirm Dialog -->
+<div class="confirm-overlay" *ngIf="showClearConfirm" role="alertdialog" aria-modal="true" aria-label="Clear conversation confirmation">
+  <div class="confirm-dialog">
+    <p class="confirm-message">Are you sure you want to clear this conversation?</p>
+    <div class="confirm-actions">
+      <button class="btn-cancel" (click)="onCancelClear()">Cancel</button>
+      <button class="btn-clear" (click)="onConfirmClear()">Clear</button>
+    </div>
+  </div>
+</div>
+</ng-container>

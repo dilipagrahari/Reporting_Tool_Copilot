@@ -1,0 +1,62 @@
+.copilot-fab {
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  z-index: 9998;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #1e3a8a, #2563eb);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 20px rgba(37, 99, 235, 0.5);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.copilot-fab:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 28px rgba(37, 99, 235, 0.7);
+}
+
+.copilot-fab:active {
+  transform: scale(0.97);
+}
+
+.fab-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.fab-tooltip {
+  position: absolute;
+  right: calc(100% + 10px);
+  top: 50%;
+  transform: translateY(-50%);
+  background: #111827;
+  color: white;
+  font-size: 12px;
+  padding: 5px 10px;
+  border-radius: 6px;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.fab-tooltip::after {
+  content: '';
+  position: absolute;
+  left: 100%;
+  top: 50%;
+  transform: translateY(-50%);
+  border: 5px solid transparent;
+  border-left-color: #111827;
+}
+
+.copilot-fab:hover .fab-tooltip {
+  opacity: 1;
+}

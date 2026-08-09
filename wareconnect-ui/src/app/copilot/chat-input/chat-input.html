@@ -1,0 +1,41 @@
+<div class="chat-input-area" *ngIf="state$ | async as state">
+  <div class="input-container">
+    <textarea
+      #textareaRef
+      class="input-field"
+      [(ngModel)]="text"
+      (keydown)="onKeyDown($event)"
+      (input)="onInput()"
+      placeholder="Ask Reporting Tool Copilot..."
+      rows="1"
+      [disabled]="state.isTyping"
+      aria-label="Chat input"
+      aria-multiline="true"></textarea>
+
+    <!-- Stop button while streaming -->
+    <button
+      class="action-btn stop-btn"
+      *ngIf="state.isStreaming"
+      (click)="onStop()"
+      title="Stop generation"
+      aria-label="Stop generation">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+        <rect x="6" y="6" width="12" height="12" rx="2"/>
+      </svg>
+    </button>
+
+    <!-- Send button -->
+    <button
+      class="action-btn send-btn"
+      *ngIf="!state.isStreaming"
+      (click)="onSend()"
+      [disabled]="!text.trim() || state.isTyping"
+      title="Send message"
+      aria-label="Send message">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+        <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+  </div>
+  <p class="input-hint">Enter to send · Shift+Enter for new line</p>
+</div>

@@ -1,0 +1,11 @@
+<ng-container *ngIf="state$ | async as state">
+  <div
+    class="copilot-window"
+    [class.open]="state.isOpen"
+    role="complementary"
+    aria-label="Reporting Tool Copilot">
+    <app-chat-header />
+    <app-chat-body />
+    <app-chat-input />
+  </div>
+</ng-container>

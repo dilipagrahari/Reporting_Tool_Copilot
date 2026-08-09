@@ -1,0 +1,96 @@
+/* Host element participates in parent flex as a fixed-height footer */
+:host {
+  display: block;
+  flex-shrink: 0;
+}
+
+.chat-input-area {
+  padding: 12px;
+  border-top: 1px solid #e5e7eb;
+  background: #ffffff;
+  flex-shrink: 0;
+}
+
+.input-container {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+  background: #f8fafc;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 8px 8px 8px 12px;
+  transition: border-color 0.15s ease;
+}
+
+.input-container:focus-within {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.input-field {
+  flex: 1;
+  border: none;
+  background: transparent;
+  resize: none;
+  outline: none;
+  font-size: 13.5px;
+  line-height: 1.5;
+  color: #111827;
+  font-family: inherit;
+  max-height: 120px;
+  overflow-y: auto;
+}
+
+.input-field::placeholder {
+  color: #9ca3af;
+}
+
+.input-field:disabled {
+  opacity: 0.6;
+}
+
+.action-btn {
+  width: 34px;
+  height: 34px;
+  border: none;
+  border-radius: 9px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: background 0.15s ease, transform 0.1s ease;
+}
+
+.send-btn {
+  background: linear-gradient(135deg, #1e3a8a, #2563eb);
+  color: white;
+}
+
+.send-btn:hover:not(:disabled) {
+  background: linear-gradient(135deg, #1e40af, #1d4ed8);
+  transform: scale(1.05);
+}
+
+.send-btn:disabled {
+  background: #e5e7eb;
+  color: #9ca3af;
+  cursor: not-allowed;
+}
+
+.stop-btn {
+  background: #fef2f2;
+  color: #ef4444;
+  border: 1px solid #fca5a5;
+}
+
+.stop-btn:hover {
+  background: #fee2e2;
+  transform: scale(1.05);
+}
+
+.input-hint {
+  font-size: 10px;
+  color: #d1d5db;
+  margin: 5px 0 0 4px;
+}

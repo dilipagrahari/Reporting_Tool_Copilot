@@ -1,0 +1,14 @@
+<div class="suggestions">
+  <p class="suggestions-label">Suggested questions</p>
+  <div class="suggestions-list">
+    <button
+      class="suggestion-pill"
+      *ngFor="let q of questions"
+      (click)="onSelect(q)"
+      [title]="q.text"
+      [attr.aria-label]="q.text">
+      <span class="suggestion-icon" aria-hidden="true">{{ q.icon }}</span>
+      <span class="suggestion-text">{{ q.text }}</span>
+    </button>
+  </div>
+</div>

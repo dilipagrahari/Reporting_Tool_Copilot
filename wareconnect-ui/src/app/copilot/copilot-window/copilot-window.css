@@ -1,0 +1,14 @@
+/* ── Copilot panel — in-layout right panel ─────────────────────── */
+.copilot-window {
+  width: 400px;
+  height: 100%;
+  background: #ffffff;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-left: 1px solid #e2e8f0;
+}
+
+@media (max-width: 480px) {
+  .copilot-window { width: 100%; }
+}

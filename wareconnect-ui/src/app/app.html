@@ -1,0 +1,175 @@
+
+<div class="shell" [class.sidebar-collapsed]="sidebarCollapsed" [class.copilot-open]="copilotOpen">
+
+  <!-- Top Header -->
+  <header class="topbar">
+    <div class="topbar-left">
+      <button class="sidebar-toggle" (click)="toggleSidebar()" [title]="sidebarCollapsed ? 'Expand sidebar' : 'Collapse sidebar'">
+        <i class="pi" [ngClass]="sidebarCollapsed ? 'pi-bars' : 'pi-align-left'"></i>
+      </button>
+      <div class="brand">
+        <i class="pi pi-chart-bar brand-icon"></i>
+        <span class="brand-name">Reporting Tool</span>
+      </div>
+    </div>
+    <!-- <span class="topbar-subtitle">Sportsman Hotel Reports</span>-->
+    <div class="topbar-right">
+      <app-copilot-button />
+    </div>
+  </header>
+
+  <div class="body">
+    <!-- Collapsible Sidebar -->
+    <aside class="sidebar">
+      <div class="sidebar-section-label">Navigation</div>
+      <nav class="nav">
+        <a class="nav-item active">
+          <i class="pi pi-home"></i>
+          <span class="nav-label">Dashboard</span>
+        </a>
+        <a class="nav-item">
+          <i class="pi pi-chart-line"></i>
+          <span class="nav-label">Reports</span>
+        </a>
+        <a class="nav-item">
+          <i class="pi pi-file"></i>
+          <span class="nav-label">Invoices</span>
+        </a>
+        <a class="nav-item">
+          <i class="pi pi-building"></i>
+          <span class="nav-label">Vendors</span>
+        </a>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main">
+
+      <!-- Toolbar Card -->
+      <div class="toolbar-card">
+        <div class="toolbar-left">
+          <div class="field-group">
+            <label>Year Table</label>
+            <p-select
+              [options]="yearSelectOptions"
+              [(ngModel)]="selectedYear"
+              optionLabel="label"
+              optionValue="value"
+              (onChange)="onYearChange($event.value)"
+              placeholder="Select year"
+              styleClass="year-select" />
+          </div>
+          <div class="field-group">
+            <label>Page Size</label>
+            <p-select
+              [options]="pageSizeSelectOptions"
+              [(ngModel)]="pageSize"
+              optionLabel="label"
+              optionValue="value"
+              (onChange)="onPageSizeChange($event.value)"
+              styleClass="size-select" />
+          </div>
+        </div>
+        <div class="toolbar-right">
+          <span class="row-count" *ngIf="!isLoading">
+            <i class="pi pi-database"></i>
+            <strong>{{ totalCount | number }}</strong>&nbsp;rows
+          </span>
+          <div class="pagination-controls">
+            <p-button icon="pi pi-chevron-left" [rounded]="true" [text]="true" severity="secondary"
+              (onClick)="goToPreviousPage()" [disabled]="pageNumber <= 1 || isLoading" />
+            <span class="page-info">{{ pageNumber }} / {{ totalPages }}</span>
+            <p-button icon="pi pi-chevron-right" [rounded]="true" [text]="true" severity="secondary"
+              (onClick)="goToNextPage()" [disabled]="pageNumber >= totalPages || isLoading" />
+          </div>
+        </div>
+      </div>
+
+      <!-- Loading / Error States -->
+      <div class="state-bar loading" *ngIf="isLoading">
+        <i class="pi pi-spin pi-spinner"></i>&nbsp;Loading data…
+      </div>
+      <div class="state-bar error" *ngIf="!isLoading && error">
+        <i class="pi pi-exclamation-triangle"></i>&nbsp;{{ error }}
+      </div>
+
+      <!-- Data Table -->
+      <div class="table-card" *ngIf="!isLoading && !error">
+        <p-table
+          [value]="rows"
+          [tableStyle]="{'min-width':'1100px'}"
+          styleClass="p-datatable-sm p-datatable-gridlines"
+          [scrollable]="true"
+          scrollHeight="flex"
+          [rowHover]="true">
+          <ng-template #header>
+            <tr>
+              <th>Row ID</th>
+              <th>Year</th>
+              <th>Account</th>
+              <th>Account Name</th>
+              <th>Type</th>
+              <th class="num-col">Amount</th>
+              <th>Month</th>
+              <th>Group</th>
+              <th>Item Type</th>
+              <th class="num-col">Sales</th>
+              <th class="num-col">Other Exp</th>
+              <th class="num-col">GP2</th>
+            </tr>
+          </ng-template>
+          <ng-template #body let-row>
+            <tr>
+              <td><span class="row-id">{{ row.rowID }}</span></td>
+              <td>{{ row.year }}</td>
+              <td><code class="acct-code">{{ row.myobAccount }}</code></td>
+              <td>{{ row.accountName }}</td>
+              <td><p-tag [value]="row.accountType" severity="secondary" styleClass="type-tag" /></td>
+              <td class="num-col amount-cell" (dblclick)="startEditAmount(row)" [title]="editingRowId !== row.rowID ? 'Double-click to edit' : ''">
+                @if (editingRowId !== row.rowID) {
+                  <span class="amount-display">{{ row.amount ?? 0 | number: '1.2-2' }}</span>
+                  <i class="pi pi-pencil edit-hint"></i>
+                } @else {
+                  <div class="amount-edit-wrap">
+                    <input #amtInput type="number" step="0.01" class="amount-input"
+                      [(ngModel)]="editValue"
+                      (keydown.enter)="saveAmount(row)"
+                      (keydown.escape)="cancelEdit()"
+                      [disabled]="isSaving" />
+                    <button class="amt-btn save-btn" (click)="saveAmount(row)" [disabled]="isSaving" title="Save (Enter)">
+                      <i class="pi" [ngClass]="isSaving ? 'pi-spin pi-spinner' : 'pi-check'"></i>
+                    </button>
+                    <button class="amt-btn cancel-btn" (click)="cancelEdit()" [disabled]="isSaving" title="Cancel (Esc)">
+                      <i class="pi pi-times"></i>
+                    </button>
+                  </div>
+                  @if (saveError) {
+                    <div class="save-error">{{ saveError }}</div>
+                  }
+                }
+              </td>
+              <td>{{ row.monthName }}</td>
+              <td>{{ row.groupName }}</td>
+              <td>{{ row.itemType }}</td>
+              <td class="num-col">{{ row.sales ?? 0 | number: '1.2-2' }}</td>
+              <td class="num-col">{{ row.otherExp ?? 0 | number: '1.2-2' }}</td>
+              <td class="num-col"
+                [class.gp2-pos]="(row.gp2 ?? 0) > 0"
+                [class.gp2-neg]="(row.gp2 ?? 0) < 0">{{ row.gp2 ?? 0 | number: '1.2-2' }}</td>
+            </tr>
+          </ng-template>
+          <ng-template #emptymessage>
+            <tr><td colspan="12" class="empty-msg">No data available for the selected year.</td></tr>
+          </ng-template>
+        </p-table>
+      </div>
+
+    </main>
+
+    <!-- Copilot Right Panel -->
+    <div class="copilot-panel" [class.open]="copilotOpen">
+      <app-copilot-window />
+    </div>
+
+  </div>
+</div>
