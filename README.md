@@ -6,7 +6,7 @@ An enterprise financial reporting application with an AI-powered copilot assista
 
 ## Table of Contents
 
-- [Screenshots](#screenshots)
+- [Video Demo](#screenshots)
 - [Features](#features)
 - [Tech Stack](#tech-stack)
 - [Architecture Overview](#architecture-overview)
@@ -19,6 +19,9 @@ An enterprise financial reporting application with an AI-powered copilot assista
 - [Environment Variables / Secrets](#environment-variables--secrets)
 
 ---
+
+## screenshots
+<img width="800" height="425" alt="Copilet_09 08 2026_19 25 59_REC-ezgif com-video-to-gif-converter" src="https://github.com/user-attachments/assets/e71ed7f0-b805-4023-ab91-1fac16184302" />
 
 ## Features
 
